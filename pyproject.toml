@@ -1,2 +1,7 @@
+[project]
+name = "tw-hostp-notifier"
+version = "1.0.0"
+requires-python = ">=3.12"
+
 [tool.vercel]
 entrypoint = "api.request:handler"
