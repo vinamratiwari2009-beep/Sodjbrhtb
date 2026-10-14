@@ -1,11 +1,9 @@
+
 {
-  "version": 2,
-  "functions": {
-    "api/request.py": {
-      "runtime": "python3.12"
-    }
-  },
   "rewrites": [
-    { "source": "/request", "destination": "/api/request" }
+    {
+      "source": "/request",
+      "destination": "/api/request"
+    }
   ]
 }
