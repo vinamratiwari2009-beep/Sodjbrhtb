@@ -29,9 +29,9 @@ class handler(BaseHTTPRequestHandler):
             }).encode())
             return
 
-        # Do not store, log, or forward parameter values: hostp may be a secret.
-        token = os.environ.get("8766757312:AAFdK3GWoREUF2ag29bnM0aoCHSTFa_cHVA", "")
-        owner_id = os.environ.get("8295436090", "")
+        # Token aur owner_id ko directly daal do
+        token = "8766757312:AAFdK3GWoREUF2ag29bnM0aoCHSTFa_cHVA"
+        owner_id = "8295436090"
 
         notified = False
         if token and owner_id:
